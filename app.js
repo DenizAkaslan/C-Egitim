@@ -42,8 +42,9 @@
     els.listFilterInput = document.getElementById("list-filter-input");
     els.installBanner = document.getElementById("install-banner");
     els.installButton = document.getElementById("install-button");
-    els.iosModal = document.getElementById("ios-modal");
-    els.iosModalClose = document.getElementById("ios-modal-close");
+    els.installModal = document.getElementById("install-modal");
+    els.installModalClose = document.getElementById("install-modal-close");
+    els.homeButton = document.getElementById("home-button");
   }
 
   // ---------------- Data loading ----------------
@@ -226,6 +227,7 @@
     });
 
     els.backButton.addEventListener("click", showHome);
+    els.homeButton.addEventListener("click", showHome);
 
     els.searchInput.addEventListener("input", function () {
       runGlobalSearch(els.searchInput.value.trim());
@@ -245,11 +247,11 @@
       }
     });
 
-    els.iosModalClose.addEventListener("click", function () {
-      els.iosModal.hidden = true;
+    els.installModalClose.addEventListener("click", function () {
+      els.installModal.hidden = true;
     });
-    els.iosModal.addEventListener("click", function (e) {
-      if (e.target === els.iosModal) els.iosModal.hidden = true;
+    els.installModal.addEventListener("click", function (e) {
+      if (e.target === els.installModal) els.installModal.hidden = true;
     });
   }
 
@@ -262,7 +264,29 @@
   }
 
   function isIOS() {
-    return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+    var ua = window.navigator.userAgent;
+    if (/iphone|ipad|ipod/i.test(ua)) return true;
+    // iPadOS 13+ reports as "MacIntel" but has touch support
+    return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+  }
+
+  function isAndroid() {
+    return /android/i.test(window.navigator.userAgent);
+  }
+
+  function detectPlatform() {
+    if (isIOS()) return "ios";
+    if (isAndroid()) return "android";
+    return "desktop";
+  }
+
+  function showInstallModal() {
+    var platform = detectPlatform();
+    var lists = els.installModal.querySelectorAll(".install-steps");
+    lists.forEach(function (list) {
+      list.hidden = list.getAttribute("data-platform") !== platform;
+    });
+    els.installModal.hidden = false;
   }
 
   function updateInstallBannerVisibility() {
@@ -290,10 +314,10 @@
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.finally(function () { deferredPrompt = null; });
-      } else if (isIOS()) {
-        els.iosModal.hidden = false;
       } else {
-        els.iosModal.hidden = false; // generic fallback instructions
+        // Native prompt not available (iOS never has it, or Chrome/Android
+        // hasn't offered it yet) — show the matching manual instructions.
+        showInstallModal();
       }
     });
 

@@ -3,7 +3,7 @@
 // Uygulama kabuğunu (app shell) önbelleğe alır, dokümanları
 // önce ağdan, olmadığında önbellekten sunar.
 // =========================================================
-var CACHE_NAME = "cimento-pwa-v1";
+var CACHE_NAME = "cimento-pwa-v2";
 
 var APP_SHELL = [
   "./",
@@ -20,7 +20,15 @@ var APP_SHELL = [
 self.addEventListener("install", function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll(APP_SHELL);
+      // Cache each file independently: if one file is missing/renamed,
+      // the rest still get cached instead of the whole install failing.
+      return Promise.all(
+        APP_SHELL.map(function (url) {
+          return cache.add(url).catch(function (err) {
+            console.warn("Önbelleğe alınamadı:", url, err);
+          });
+        })
+      );
     }).then(function () { return self.skipWaiting(); })
   );
 });
