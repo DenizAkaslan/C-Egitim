@@ -1,0 +1,319 @@
+// =========================================================
+// ÇİMENTO TEKNİK EĞİTİMLERİ — App logic
+// =========================================================
+(function () {
+  "use strict";
+
+  var CATEGORY_LABELS = {
+    talimatnameler: "Talimatnameler",
+    egitimler: "Eğitimler"
+  };
+
+  var state = {
+    data: { talimatnameler: [], egitimler: [] },
+    currentCategory: null
+  };
+
+  var els = {};
+
+  document.addEventListener("DOMContentLoaded", init);
+
+  function init() {
+    cacheElements();
+    document.getElementById("year").textContent = new Date().getFullYear();
+    loadData();
+    bindEvents();
+    setupInstallPrompt();
+    registerServiceWorker();
+    handleInitialRoute();
+  }
+
+  function cacheElements() {
+    els.viewHome = document.getElementById("view-home");
+    els.viewList = document.getElementById("view-list");
+    els.searchInput = document.getElementById("search-input");
+    els.searchClear = document.getElementById("search-clear");
+    els.searchResults = document.getElementById("search-results");
+    els.categoryCards = document.getElementById("category-cards");
+    els.backButton = document.getElementById("back-button");
+    els.listTitle = document.getElementById("list-title");
+    els.listItems = document.getElementById("list-items");
+    els.listEmpty = document.getElementById("list-empty");
+    els.listFilterInput = document.getElementById("list-filter-input");
+    els.installBanner = document.getElementById("install-banner");
+    els.installButton = document.getElementById("install-button");
+    els.iosModal = document.getElementById("ios-modal");
+    els.iosModalClose = document.getElementById("ios-modal-close");
+  }
+
+  // ---------------- Data loading ----------------
+  function loadData() {
+    fetch("data.json", { cache: "no-cache" })
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        state.data.talimatnameler = json.talimatnameler || [];
+        state.data.egitimler = json.egitimler || [];
+        updateCounts();
+        // If a list view is currently open, refresh it
+        if (state.currentCategory) renderList(state.currentCategory);
+      })
+      .catch(function (err) {
+        console.error("data.json yüklenemedi:", err);
+        updateCounts();
+      });
+  }
+
+  function updateCounts() {
+    document.getElementById("count-talimatnameler").textContent =
+      state.data.talimatnameler.length + " doküman";
+    document.getElementById("count-egitimler").textContent =
+      state.data.egitimler.length + " doküman";
+  }
+
+  // ---------------- Turkish-aware text normalize ----------------
+  function normalize(str) {
+    if (!str) return "";
+    var map = { "ı": "i", "İ": "i", "I": "i", "ş": "s", "Ş": "s", "ğ": "g", "Ğ": "g",
+                "ü": "u", "Ü": "u", "ö": "o", "Ö": "o", "ç": "c", "Ç": "c" };
+    return str
+      .split("")
+      .map(function (ch) { return map[ch] !== undefined ? map[ch] : ch; })
+      .join("")
+      .toLowerCase();
+  }
+
+  function fileExt(path) {
+    var m = /\.([a-zA-Z0-9]+)$/.exec(path || "");
+    return m ? m[1].toUpperCase() : "DOSYA";
+  }
+
+  // ---------------- Routing ----------------
+  function handleInitialRoute() {
+    var hash = window.location.hash.replace("#", "");
+    if (hash === "talimatnameler" || hash === "egitimler") {
+      openCategory(hash, false);
+    }
+  }
+
+  function showHome() {
+    els.viewList.hidden = true;
+    els.viewHome.hidden = false;
+    state.currentCategory = null;
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }
+
+  function openCategory(category, pushHash) {
+    state.currentCategory = category;
+    els.viewHome.hidden = true;
+    els.viewList.hidden = false;
+    els.listFilterInput.value = "";
+    clearSearch();
+    renderList(category);
+    if (pushHash !== false) window.location.hash = category;
+    els.viewList.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
+  function renderList(category, filterQuery) {
+    var items = state.data[category] || [];
+    els.listTitle.textContent = CATEGORY_LABELS[category] || "Dokümanlar";
+
+    if (filterQuery) {
+      var q = normalize(filterQuery);
+      items = items.filter(function (it) { return normalize(it.title).indexOf(q) !== -1; });
+    }
+
+    els.listItems.innerHTML = "";
+
+    if (items.length === 0) {
+      els.listEmpty.hidden = false;
+      els.listEmpty.textContent = filterQuery
+        ? "Bu aramayla eşleşen bir doküman bulunamadı."
+        : "Bu kategoride henüz doküman eklenmedi.";
+      return;
+    }
+    els.listEmpty.hidden = true;
+
+    items.forEach(function (item) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.className = "doc-item";
+      a.href = item.file;
+      a.target = "_blank";
+      a.rel = "noopener";
+
+      a.innerHTML =
+        '<span class="doc-item-icon"><svg class="icon"><use href="#icon-file"></use></svg></span>' +
+        '<span class="doc-item-body">' +
+          '<span class="doc-item-title"></span>' +
+          '<span class="doc-item-badge"></span>' +
+        '</span>';
+
+      a.querySelector(".doc-item-title").textContent = item.title;
+      a.querySelector(".doc-item-badge").textContent = fileExt(item.file);
+
+      li.appendChild(a);
+      els.listItems.appendChild(li);
+    });
+  }
+
+  // ---------------- Global search (home page) ----------------
+  function runGlobalSearch(query) {
+    var q = normalize(query);
+    if (!q) {
+      clearSearch();
+      return;
+    }
+
+    var results = [];
+    Object.keys(CATEGORY_LABELS).forEach(function (cat) {
+      (state.data[cat] || []).forEach(function (item) {
+        if (normalize(item.title).indexOf(q) !== -1) {
+          results.push({ item: item, category: cat });
+        }
+      });
+    });
+
+    els.categoryCards.hidden = true;
+    els.installBanner.hidden = true;
+    els.searchResults.hidden = false;
+    els.searchClear.hidden = false;
+    els.searchResults.innerHTML = "";
+
+    if (results.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "no-results";
+      empty.textContent = 'Sonuç bulunamadı: "' + query + '"';
+      els.searchResults.appendChild(empty);
+      return;
+    }
+
+    results.slice(0, 30).forEach(function (r) {
+      var a = document.createElement("a");
+      a.className = "search-result-item";
+      a.href = r.item.file;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.innerHTML =
+        '<span class="search-result-icon"><svg class="icon"><use href="#icon-file"></use></svg></span>' +
+        '<span class="search-result-body">' +
+          '<span class="search-result-title"></span>' +
+          '<span class="search-result-meta"></span>' +
+        '</span>';
+      a.querySelector(".search-result-title").textContent = r.item.title;
+      a.querySelector(".search-result-meta").textContent =
+        CATEGORY_LABELS[r.category] + " · " + fileExt(r.item.file);
+      els.searchResults.appendChild(a);
+    });
+  }
+
+  function clearSearch() {
+    els.searchInput.value = "";
+    els.searchResults.hidden = true;
+    els.searchClear.hidden = true;
+    els.categoryCards.hidden = false;
+    updateInstallBannerVisibility();
+  }
+
+  // ---------------- Events ----------------
+  function bindEvents() {
+    els.categoryCards.addEventListener("click", function (e) {
+      var btn = e.target.closest(".nav-card");
+      if (!btn) return;
+      openCategory(btn.getAttribute("data-category"));
+    });
+
+    els.backButton.addEventListener("click", showHome);
+
+    els.searchInput.addEventListener("input", function () {
+      runGlobalSearch(els.searchInput.value.trim());
+    });
+    els.searchClear.addEventListener("click", clearSearch);
+
+    els.listFilterInput.addEventListener("input", function () {
+      renderList(state.currentCategory, els.listFilterInput.value.trim());
+    });
+
+    window.addEventListener("hashchange", function () {
+      var hash = window.location.hash.replace("#", "");
+      if (hash === "talimatnameler" || hash === "egitimler") {
+        openCategory(hash, false);
+      } else {
+        showHome();
+      }
+    });
+
+    els.iosModalClose.addEventListener("click", function () {
+      els.iosModal.hidden = true;
+    });
+    els.iosModal.addEventListener("click", function (e) {
+      if (e.target === els.iosModal) els.iosModal.hidden = true;
+    });
+  }
+
+  // ---------------- Add to Home Screen ----------------
+  var deferredPrompt = null;
+
+  function isStandalone() {
+    return window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+  }
+
+  function isIOS() {
+    return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  }
+
+  function updateInstallBannerVisibility() {
+    if (isStandalone()) {
+      els.installBanner.hidden = true;
+      return;
+    }
+    if (!els.searchResults.hidden) return; // don't show while search results are open
+    els.installBanner.hidden = false;
+  }
+
+  function setupInstallPrompt() {
+    if (isStandalone()) {
+      els.installBanner.hidden = true;
+      return;
+    }
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      updateInstallBannerVisibility();
+    });
+
+    els.installButton.addEventListener("click", function () {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.finally(function () { deferredPrompt = null; });
+      } else if (isIOS()) {
+        els.iosModal.hidden = false;
+      } else {
+        els.iosModal.hidden = false; // generic fallback instructions
+      }
+    });
+
+    // Show banner by default (covers iOS + browsers without beforeinstallprompt yet)
+    updateInstallBannerVisibility();
+
+    window.addEventListener("appinstalled", function () {
+      els.installBanner.hidden = true;
+      deferredPrompt = null;
+    });
+  }
+
+  // ---------------- Service worker ----------------
+  function registerServiceWorker() {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js").catch(function (err) {
+          console.error("Service worker kaydı başarısız:", err);
+        });
+      });
+    }
+  }
+})();
