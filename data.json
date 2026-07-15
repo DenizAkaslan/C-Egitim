@@ -1,4 +1,9 @@
 {
   "talimatnameler": [],
-  "egitimler": []
+  "egitimler": [{
+  "talimatnameler": [],
+  "egitimler": [
+    { "title": "1-Yağlama Sistemleri", "file": "docs/egitimler/1-Yağlama Sistemleri.pdf" }
+  ]
+}]
 }
