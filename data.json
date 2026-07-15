@@ -1,6 +1,37 @@
 {
   "talimatnameler": [
-  { "title": "Sizdirmazlik-Elemanlari", "file": "docs/egitimler/Sizdirmazlik-Elemanlari.pdf" }  
+    { "title": "Atik Besleme", "file": "docs/talimatnameler/Atik Besleme.pdf" },
+    { "title": "Kirici Kaziyici Bant Yollari", "file": "docs/talimatnameler/Kirici Kaziyici Bant Yollari.pdf" },
+    { "title": "Alev Borusu", "file": "docs/talimatnameler/Alev Borusu.pdf" },
+    { "title": "Degirmen Plaka Kontrolu", "file": "docs/talimatnameler/Degirmen Plaka Kontrolu.pdf" },
+    { "title": "Su Jeti Kullanimi", "file": "docs/talimatnameler/Su Jeti Kullanimi.pdf" },
+    { "title": "Canak Intikal", "file": "docs/talimatnameler/Canak Intikal.pdf" },
+    { "title": "Kovali Tasiyicilar", "file": "docs/talimatnameler/Kovali Tasiyicilar.pdf" },
+    { "title": "Silklon Acma", "file": "docs/talimatnameler/Silklon Acma.pdf" },
+    { "title": "Degirmen Operatorlugu", "file": "docs/talimatnameler/Degirmen Operatorlugu.pdf" },
+    { "title": "Doner Firin Operatorlugu", "file": "docs/talimatnameler/Doner Firin Operatorlugu.pdf" },
+    { "title": "Silklon On Isitici", "file": "docs/talimatnameler/Silklon On Isitici.pdf" },
+    { "title": "Yukleme Banti", "file": "docs/talimatnameler/Yukleme Banti.pdf" },
+    { "title": "Kesek Kiricilar", "file": "docs/talimatnameler/Kesek Kiricilar.pdf" },
+    { "title": "Paletli Bantlar", "file": "docs/talimatnameler/Paletli Bantlar.pdf" },
+    { "title": "Sogutma Kulesi", "file": "docs/talimatnameler/Sogutma Kulesi.pdf" },
+    { "title": "Gezer Vinc Kontrolu ve Bakimi", "file": "docs/talimatnameler/Gezer Vinc Kontrolu ve Bakimi.pdf" },
+    { "title": "Hucre Tekeri", "file": "docs/talimatnameler/Hucre Tekeri.pdf" },
+    { "title": "Patlac Kontrolü", "file": "docs/talimatnameler/Patlac Kontrolü.pdf" },
+    { "title": "Acik Dolum Cihazi Bakimi", "file": "docs/talimatnameler/Acik Dolum Cihazi Bakimi.pdf" },
+    { "title": "Bunker Kontrlu ve Temizligi", "file": "docs/talimatnameler/Bunker Kontrlu ve Temizligi.pdf" },
+    { "title": "Fan Bakımı ve Değişimi", "file": "docs/talimatnameler/Fan Bakımı ve Değişimi.pdf" },
+    { "title": "Celik Bantlar", "file": "docs/talimatnameler/Celik Bantlar.pdf" },
+    { "title": "Dozajli Besleyiciler", "file": "docs/talimatnameler/Dozajli Besleyiciler.pdf" },
+    { "title": "Klapeler ve Kelebek Vanalar", "file": "docs/talimatnameler/Klapeler ve Kelebek Vanalar.pdf" },
+    { "title": "Buhar Kazani", "file": "docs/talimatnameler/Buhar Kazani.pdf" },
+    { "title": "Eked", "file": "docs/talimatnameler/Eked.pdf" },
+    { "title": "Torbali Filtre Genel Bakim", "file": "docs/talimatnameler/Torbali Filtre Genel Bakim.pdf" },
+    { "title": "Blowerlar", "file": "docs/talimatnameler/Blowerlar.pdf" },
+    { "title": "Havali Bantlar", "file": "docs/talimatnameler/Havali Bantlar.pdf" },
+    { "title": "Kompresorler", "file": "docs/talimatnameler/Kompresorler.pdf" },
+    { "title": "Sizdirmazlik-Elemanlari", "file": "docs/talimatnameler/Sizdirmazlik-Elemanlari.pdf" },
+    { "title": "Yag-ve-Yaglama-Sistemleri", "file": "docs/talimatnameler/Yag-ve-Yaglama-Sistemleri.pdf" }
   ],
   "egitimler": [
     { "title": "1-Yağlama Sistemleri", "file": "docs/egitimler/1-Yağlama Sistemleri.pdf" }
