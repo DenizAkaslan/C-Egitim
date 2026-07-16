@@ -6,11 +6,12 @@
 
   var CATEGORY_LABELS = {
     talimatnameler: "Talimatnameler",
-    egitimler: "Eğitimler"
+    egitimler: "Eğitimler",
+    cimsaustam: "Çimsa Ustam Eğitimleri"
   };
 
   var state = {
-    data: { talimatnameler: [], egitimler: [] },
+    data: { talimatnameler: [], egitimler: [], cimsaustam: [] },
     currentCategory: null
   };
 
@@ -22,11 +23,26 @@
     cacheElements();
     document.getElementById("year").textContent = new Date().getFullYear();
     loadData();
-    bindEvents();
-    setupInstallPrompt();
-    registerServiceWorker();
-    setupShare();
-    handleInitialRoute();
+    safeRun(bindEvents, "bindEvents");
+    safeRun(setupInstallPrompt, "setupInstallPrompt");
+    safeRun(registerServiceWorker, "registerServiceWorker");
+    safeRun(setupShare, "setupShare");
+    safeRun(handleInitialRoute, "handleInitialRoute");
+  }
+
+  function safeRun(fn, label) {
+    try {
+      fn();
+    } catch (err) {
+      console.error("[" + label + "] başlatılamadı:", err);
+    }
+  }
+
+  // Null-safe event binding: if an expected element is momentarily
+  // missing (e.g. mid-update cache mismatch), skip it instead of
+  // throwing and taking down the rest of initialization with it.
+  function on(el, eventName, handler) {
+    if (el) el.addEventListener(eventName, handler);
   }
 
   function cacheElements() {
@@ -63,6 +79,7 @@
       .then(function (json) {
         state.data.talimatnameler = json.talimatnameler || [];
         state.data.egitimler = json.egitimler || [];
+        state.data.cimsaustam = json.cimsaustam || [];
         updateCounts();
         // If a list view is currently open, refresh it
         if (state.currentCategory) renderList(state.currentCategory);
@@ -78,6 +95,8 @@
       state.data.talimatnameler.length + " doküman";
     document.getElementById("count-egitimler").textContent =
       state.data.egitimler.length + " doküman";
+    document.getElementById("count-cimsaustam").textContent =
+      state.data.cimsaustam.length + " doküman";
   }
 
   // ---------------- Turkish-aware text normalize ----------------
@@ -100,7 +119,7 @@
   // ---------------- Routing ----------------
   function handleInitialRoute() {
     var hash = window.location.hash.replace("#", "");
-    if (hash === "talimatnameler" || hash === "egitimler") {
+    if (CATEGORY_LABELS.hasOwnProperty(hash)) {
       openCategory(hash, false);
     }
   }
@@ -229,37 +248,37 @@
 
   // ---------------- Events ----------------
   function bindEvents() {
-    els.categoryCards.addEventListener("click", function (e) {
+    on(els.categoryCards, "click", function (e) {
       var btn = e.target.closest(".nav-card");
       if (!btn) return;
       openCategory(btn.getAttribute("data-category"));
     });
 
-    els.backButton.addEventListener("click", showHome);
-    els.homeButton.addEventListener("click", showHome);
+    on(els.backButton, "click", showHome);
+    on(els.homeButton, "click", showHome);
 
-    els.searchInput.addEventListener("input", function () {
+    on(els.searchInput, "input", function () {
       runGlobalSearch(els.searchInput.value.trim());
     });
-    els.searchClear.addEventListener("click", clearSearch);
+    on(els.searchClear, "click", clearSearch);
 
-    els.listFilterInput.addEventListener("input", function () {
+    on(els.listFilterInput, "input", function () {
       renderList(state.currentCategory, els.listFilterInput.value.trim());
     });
 
     window.addEventListener("hashchange", function () {
       var hash = window.location.hash.replace("#", "");
-      if (hash === "talimatnameler" || hash === "egitimler") {
+      if (CATEGORY_LABELS.hasOwnProperty(hash)) {
         openCategory(hash, false);
       } else {
         showHome();
       }
     });
 
-    els.installModalClose.addEventListener("click", function () {
+    on(els.installModalClose, "click", function () {
       els.installModal.hidden = true;
     });
-    els.installModal.addEventListener("click", function (e) {
+    on(els.installModal, "click", function (e) {
       if (e.target === els.installModal) els.installModal.hidden = true;
     });
   }
@@ -319,7 +338,7 @@
       updateInstallBannerVisibility();
     });
 
-    els.installButton.addEventListener("click", function () {
+    on(els.installButton, "click", function () {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.finally(function () { deferredPrompt = null; });
@@ -349,7 +368,7 @@
     var text = "Çimento Teknik Eğitimleri — Talimatname ve Eğitim Arşivi";
     var url = getShareUrl();
 
-    els.shareButton.addEventListener("click", function () {
+    on(els.shareButton, "click", function () {
       if (navigator.share) {
         navigator.share({ title: title, text: text, url: url }).catch(function () {
           // User cancelled the native share sheet — nothing to do.
@@ -359,14 +378,14 @@
       }
     });
 
-    els.shareModalClose.addEventListener("click", function () {
+    on(els.shareModalClose, "click", function () {
       els.shareModal.hidden = true;
     });
-    els.shareModal.addEventListener("click", function (e) {
+    on(els.shareModal, "click", function (e) {
       if (e.target === els.shareModal) els.shareModal.hidden = true;
     });
 
-    els.shareCopy.addEventListener("click", function () {
+    on(els.shareCopy, "click", function () {
       copyToClipboard(url);
     });
   }
