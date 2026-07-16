@@ -337,6 +337,61 @@ main { flex: 1; }
 }
 .btn-install:active { background: var(--blue-dark); }
 
+/* ================= SHARE ================= */
+.btn-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 15px;
+  margin-bottom: 20px;
+  color: var(--blue);
+  font-size: 0.95rem;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+}
+.btn-share:active { background: #F5F9FC; }
+.btn-share .icon { width: 20px; height: 20px; }
+
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: inherit;
+}
+.share-option:active { background: var(--bg); }
+.share-option-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.share-option-icon--whatsapp { background: #25D366; }
+.share-option-icon--sms { background: var(--blue); }
+.share-option-icon--mail { background: var(--cyan); }
+.share-option-icon--copy { background: var(--text-muted); }
+
 /* ================= LIST VIEW ================= */
 .back-button {
   display: flex;

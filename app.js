@@ -25,6 +25,7 @@
     bindEvents();
     setupInstallPrompt();
     registerServiceWorker();
+    setupShare();
     handleInitialRoute();
   }
 
@@ -45,6 +46,14 @@
     els.installModal = document.getElementById("install-modal");
     els.installModalClose = document.getElementById("install-modal-close");
     els.homeButton = document.getElementById("home-button");
+    els.shareButton = document.getElementById("share-button");
+    els.shareModal = document.getElementById("share-modal");
+    els.shareModalClose = document.getElementById("share-modal-close");
+    els.shareWhatsapp = document.getElementById("share-whatsapp");
+    els.shareSms = document.getElementById("share-sms");
+    els.shareEmail = document.getElementById("share-email");
+    els.shareCopy = document.getElementById("share-copy");
+    els.shareCopyLabel = document.getElementById("share-copy-label");
   }
 
   // ---------------- Data loading ----------------
@@ -328,6 +337,73 @@
       els.installBanner.hidden = true;
       deferredPrompt = null;
     });
+  }
+
+  // ---------------- Share ----------------
+  function getShareUrl() {
+    return window.location.origin + window.location.pathname;
+  }
+
+  function setupShare() {
+    var title = "Çimento Teknik Eğitimleri";
+    var text = "Çimento Teknik Eğitimleri — Talimatname ve Eğitim Arşivi";
+    var url = getShareUrl();
+
+    els.shareButton.addEventListener("click", function () {
+      if (navigator.share) {
+        navigator.share({ title: title, text: text, url: url }).catch(function () {
+          // User cancelled the native share sheet — nothing to do.
+        });
+      } else {
+        openShareModal(title, text, url);
+      }
+    });
+
+    els.shareModalClose.addEventListener("click", function () {
+      els.shareModal.hidden = true;
+    });
+    els.shareModal.addEventListener("click", function (e) {
+      if (e.target === els.shareModal) els.shareModal.hidden = true;
+    });
+
+    els.shareCopy.addEventListener("click", function () {
+      copyToClipboard(url);
+    });
+  }
+
+  function openShareModal(title, text, url) {
+    var message = text + " " + url;
+    els.shareWhatsapp.href = "https://wa.me/?text=" + encodeURIComponent(message);
+    els.shareSms.href = "sms:?body=" + encodeURIComponent(message);
+    els.shareEmail.href = "mailto:?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(message);
+    els.shareCopyLabel.textContent = "Linki Kopyala";
+    els.shareModal.hidden = false;
+  }
+
+  function copyToClipboard(url) {
+    function onCopied() {
+      els.shareCopyLabel.textContent = "Kopyalandı ✓";
+      setTimeout(function () { els.shareCopyLabel.textContent = "Linki Kopyala"; }, 1800);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(onCopied).catch(function () { legacyCopy(url, onCopied); });
+    } else {
+      legacyCopy(url, onCopied);
+    }
+  }
+
+  function legacyCopy(url, onDone) {
+    var input = document.createElement("textarea");
+    input.value = url;
+    input.style.position = "fixed";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    input.focus();
+    input.select();
+    try { document.execCommand("copy"); } catch (e) { /* ignore */ }
+    document.body.removeChild(input);
+    if (onDone) onDone();
   }
 
   // ---------------- Service worker ----------------
