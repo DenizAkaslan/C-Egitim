@@ -67,5 +67,17 @@
     { "title": "Blowerlar", "file": "docs/egitimler/Blowerlar.pdf" },
     { "title": "Havali Bantlar", "file": "docs/egitimler/Havali Bantlar.pdf" },
     { "title": "Yaglama Sistemleri", "file": "docs/egitimler/Yaglama Sistemleri.pdf" }
+  ],
+  "cimsaustam": [
+    { "title": "Silklon Acma", "file": "docs/cimsaustam/Silklon Acma.pdf" },
+    { "title": "Degirmen Operatorlugu", "file": "docs/cimsaustam/Degirmen Operatorlugu.pdf" },
+    { "title": "İntikal Canak", "file": "docs/cimsaustam/İntikal Canak.pdf" },
+    { "title": "Kovali Tasiyicilar", "file": "docs/cimsaustam/Kovali Tasiyicilar.pdf" },
+    { "title": "Doner Firinlar", "file": "docs/cimsaustam/Doner Firinlar.pdf" },
+    { "title": "Paletli Bantlar", "file": "docs/cimsaustam/Paletli Bantlar.pdf" },
+    { "title": "Sogutma Kulesi", "file": "docs/cimsaustam/Sogutma Kulesi.pdf" },
+    { "title": "Fan Bakimi ve Degisimi", "file": "docs/cimsaustam/Fan Bakimi ve Degisimi.pdf" },
+    { "title": "Hücre Tekeri", "file": "docs/cimsaustam/Hücre Tekeri.pdf" },
+    { "title": "Patlaclar", "file": "docs/cimsaustam/Patlaclar.pdf" }
   ]
 }
