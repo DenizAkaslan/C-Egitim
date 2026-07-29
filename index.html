@@ -102,7 +102,12 @@
     <div class="header-inner">
       <div class="header-badge" aria-hidden="true"></div>
       <h1>ÇİMENTO TEKNİK EĞİTİMLERİ</h1>
-      <p class="header-sub">Talimatname ve Eğitim Arşivi</p>
+      <p class="header-sub">Eğitim E-Kitap</p>
+
+      <div class="header-tabs" role="tablist">
+        <button id="tab-home" class="header-tab active" data-tab="home" role="tab" aria-selected="true">Ana Sayfa</button>
+        <button id="tab-calendar" class="header-tab" data-tab="calendar" role="tab" aria-selected="false">Eğitim Takvimi</button>
+      </div>
     </div>
     <div class="header-stripe" aria-hidden="true"></div>
   </header>
@@ -195,6 +200,24 @@
 
       <ul id="list-items" class="doc-list"></ul>
       <p id="list-empty" class="empty-state" hidden></p>
+    </section>
+
+    <!-- ================= EĞİTİM TAKVİMİ VIEW ================= -->
+    <section id="view-calendar" class="view" hidden>
+      <h2 class="list-title">Eğitim Takvimi</h2>
+      <p class="intro-text">
+        Temmuz 2026 – Temmuz 2027 dönemine ait fabrika eğitim takvimini
+        aşağıdan inceleyebilir ya da tam ekran açabilirsiniz.
+      </p>
+
+      <a href="docs/egitim-takvimi.pdf" target="_blank" rel="noopener" class="btn-share">
+        <svg class="icon"><use href="#icon-file"></use></svg>
+        <span>Takvimi Tam Ekran Aç</span>
+      </a>
+
+      <div class="pdf-frame-wrap">
+        <iframe class="pdf-frame" src="docs/egitim-takvimi.pdf" title="Eğitim Takvimi"></iframe>
+      </div>
     </section>
 
   </main>

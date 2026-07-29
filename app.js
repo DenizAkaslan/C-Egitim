@@ -48,6 +48,9 @@
   function cacheElements() {
     els.viewHome = document.getElementById("view-home");
     els.viewList = document.getElementById("view-list");
+    els.viewCalendar = document.getElementById("view-calendar");
+    els.tabHome = document.getElementById("tab-home");
+    els.tabCalendar = document.getElementById("tab-calendar");
     els.searchInput = document.getElementById("search-input");
     els.searchClear = document.getElementById("search-clear");
     els.searchResults = document.getElementById("search-results");
@@ -119,6 +122,10 @@
   // ---------------- Routing ----------------
   function handleInitialRoute() {
     var hash = window.location.hash.replace("#", "");
+    if (hash === "takvim") {
+      showCalendar(false);
+      return;
+    }
     if (CATEGORY_LABELS.hasOwnProperty(hash)) {
       openCategory(hash, false);
     }
@@ -126,17 +133,42 @@
 
   function showHome() {
     els.viewList.hidden = true;
+    els.viewCalendar.hidden = true;
     els.viewHome.hidden = false;
     state.currentCategory = null;
+    setActiveTab("home");
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }
+
+  function showCalendar(pushHash) {
+    els.viewHome.hidden = true;
+    els.viewList.hidden = true;
+    els.viewCalendar.hidden = false;
+    state.currentCategory = null;
+    setActiveTab("calendar");
+    if (pushHash !== false) window.location.hash = "takvim";
+    window.scrollTo(0, 0);
+  }
+
+  function setActiveTab(tab) {
+    if (els.tabHome) {
+      els.tabHome.classList.toggle("active", tab === "home");
+      els.tabHome.setAttribute("aria-selected", tab === "home" ? "true" : "false");
+    }
+    if (els.tabCalendar) {
+      els.tabCalendar.classList.toggle("active", tab === "calendar");
+      els.tabCalendar.setAttribute("aria-selected", tab === "calendar" ? "true" : "false");
     }
   }
 
   function openCategory(category, pushHash) {
     state.currentCategory = category;
     els.viewHome.hidden = true;
+    els.viewCalendar.hidden = true;
     els.viewList.hidden = false;
+    setActiveTab("home");
     els.listFilterInput.value = "";
     clearSearch();
     renderList(category);
@@ -256,6 +288,8 @@
 
     on(els.backButton, "click", showHome);
     on(els.homeButton, "click", showHome);
+    on(els.tabHome, "click", showHome);
+    on(els.tabCalendar, "click", function () { showCalendar(); });
 
     on(els.searchInput, "input", function () {
       runGlobalSearch(els.searchInput.value.trim());
@@ -268,7 +302,9 @@
 
     window.addEventListener("hashchange", function () {
       var hash = window.location.hash.replace("#", "");
-      if (CATEGORY_LABELS.hasOwnProperty(hash)) {
+      if (hash === "takvim") {
+        showCalendar(false);
+      } else if (CATEGORY_LABELS.hasOwnProperty(hash)) {
         openCategory(hash, false);
       } else {
         showHome();

@@ -126,6 +126,29 @@ button {
 .home-button:active { background: rgba(255, 255, 255, 0.26); }
 .home-button .icon { width: 19px; height: 19px; }
 
+.header-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.header-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-family: inherit;
+}
+.header-tab.active {
+  background: #fff;
+  color: var(--navy);
+  border-color: transparent;
+}
+
 /* ================= MAIN / VIEWS ================= */
 main { flex: 1; }
 .view { padding: 22px 20px 12px; }
@@ -469,6 +492,23 @@ main { flex: 1; }
   color: var(--text-muted);
   font-size: 0.9rem;
   padding: 30px 10px;
+}
+
+/* ================= PDF VIEWER (Eğitim Takvimi) ================= */
+.pdf-frame-wrap {
+  margin-top: 16px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.pdf-frame {
+  width: 100%;
+  height: 65vh;
+  min-height: 420px;
+  border: none;
+  display: block;
 }
 
 /* ================= FOOTER ================= */
