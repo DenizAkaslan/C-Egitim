@@ -494,21 +494,111 @@ main { flex: 1; }
   padding: 30px 10px;
 }
 
-/* ================= PDF VIEWER (Eğitim Takvimi) ================= */
-.pdf-frame-wrap {
-  margin-top: 16px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow);
-  background: #fff;
+/* ================= EĞİTİM TAKVİMİ (inline HTML calendar) ================= */
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 16px 0 22px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
 }
-.pdf-frame {
-  width: 100%;
-  height: 65vh;
-  min-height: 420px;
-  border: none;
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cal-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.cal-legend-swatch--afyon { background: #2563EB; }
+.cal-legend-swatch--eskisehir { background: #16A34A; }
+.cal-legend-swatch--mersin { background: #D97706; }
+.cal-legend-swatch--holiday { background: #E7A9A9; }
+
+.cal-month { margin-bottom: 30px; }
+.cal-month-title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--navy);
+  background: #EAF1F8;
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  margin: 0 0 10px;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+.cal-dayname {
+  font-size: 0.56rem;
+  font-weight: 800;
+  text-align: center;
+  color: #fff;
+  background: var(--navy);
+  padding: 5px 1px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.cal-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-height: 52px;
+  padding: 3px 2px;
+  position: relative;
+  overflow: hidden;
+}
+.cal-cell--empty { background: transparent; border-color: transparent; }
+.cal-daynum {
   display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.cal-badge {
+  display: block;
+  font-size: 0.46rem;
+  font-weight: 800;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 2px;
+  margin-top: 2px;
+  line-height: 1.2;
+  text-align: center;
+}
+.cal-training {
+  display: block;
+  font-size: 0.48rem;
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1.15;
+  color: var(--text);
+  word-break: break-word;
+}
+.cal-cell--afyon .cal-badge { background: #2563EB; }
+.cal-cell--afyon .cal-training { color: #2563EB; }
+.cal-cell--eskisehir .cal-badge { background: #16A34A; }
+.cal-cell--eskisehir .cal-training { color: #16A34A; }
+.cal-cell--mersin .cal-badge { background: #D97706; }
+.cal-cell--mersin .cal-training { color: #D97706; }
+.cal-cell--holiday {
+  background: #FBE9E9;
+  border-color: #F0C7C7;
+}
+.cal-cell--holiday .cal-badge {
+  background: #C0392B;
+  font-size: 0.44rem;
 }
 
 /* ================= FOOTER ================= */

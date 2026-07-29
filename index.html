@@ -206,18 +206,24 @@
     <section id="view-calendar" class="view" hidden>
       <h2 class="list-title">Eğitim Takvimi</h2>
       <p class="intro-text">
-        Temmuz 2026 – Temmuz 2027 dönemine ait fabrika eğitim takvimini
-        aşağıdan inceleyebilir ya da tam ekran açabilirsiniz.
+        Temmuz 2026 – Temmuz 2027 dönemine ait fabrika eğitim takvimi. Her
+        eğitim 2 saattir (10:00–12:00). Aşağı kaydırarak tüm ayları
+        görebilirsiniz.
       </p>
 
       <a href="docs/egitim-takvimi.pdf" target="_blank" rel="noopener" class="btn-share">
         <svg class="icon"><use href="#icon-file"></use></svg>
-        <span>Takvimi Tam Ekran Aç</span>
+        <span>PDF Olarak Aç / İndir</span>
       </a>
 
-      <div class="pdf-frame-wrap">
-        <iframe class="pdf-frame" src="docs/egitim-takvimi.pdf" title="Eğitim Takvimi"></iframe>
+      <div class="cal-legend">
+        <span class="cal-legend-item"><span class="cal-legend-swatch cal-legend-swatch--afyon"></span>Afyon Fabrikası</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch cal-legend-swatch--eskisehir"></span>Eskişehir Fabrikası</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch cal-legend-swatch--mersin"></span>Mersin Fabrikası</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch cal-legend-swatch--holiday"></span>Resmî Tatil</span>
       </div>
+
+      <div id="calendar-content"></div>
     </section>
 
   </main>

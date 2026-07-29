@@ -10,6 +10,139 @@
     cimsaustam: "Çimsa Ustam Eğitimleri"
   };
 
+  // ---------------- Eğitim Takvimi data (Temmuz 2026 – Temmuz 2027) ----------------
+  var CAL_MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+  var CAL_DAY_NAMES = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+  var CAL_FACTORY_LABELS = { afyon: "Afyon", eskisehir: "Eskişehir", mersin: "Mersin" };
+
+  var CAL_MONTHS = [
+    [2026, 6], [2026, 7], [2026, 8], [2026, 9], [2026, 10], [2026, 11],
+    [2027, 0], [2027, 1], [2027, 2], [2027, 3], [2027, 4], [2027, 5], [2027, 6]
+  ];
+
+  var CAL_EVENTS = [
+    { date: "2026-07-28", factory: "afyon", training: "Atık Besleme" },
+    { date: "2026-07-29", factory: "eskisehir", training: "Atık Besleme" },
+    { date: "2026-07-30", factory: "mersin", training: "Atık Besleme" },
+    { date: "2026-08-11", factory: "afyon", training: "Kırıcı Kazıyıcı Bakımı" },
+    { date: "2026-08-12", factory: "eskisehir", training: "Kırıcı Kazıyıcı Bakımı" },
+    { date: "2026-08-13", factory: "mersin", training: "Kırıcı Kazıyıcı Bakımı" },
+    { date: "2026-08-18", factory: "afyon", training: "Alev Borusu" },
+    { date: "2026-08-19", factory: "eskisehir", training: "Alev Borusu" },
+    { date: "2026-08-20", factory: "mersin", training: "Alev Borusu" },
+    { date: "2026-08-26", factory: "eskisehir", training: "Değirmen Plaka Kontrolü" },
+    { date: "2026-08-27", factory: "mersin", training: "Değirmen Plaka Kontrolü" },
+    { date: "2026-09-01", factory: "afyon", training: "Değirmen Plaka Kontrolü" },
+    { date: "2026-09-08", factory: "afyon", training: "Siklon Açma" },
+    { date: "2026-09-09", factory: "eskisehir", training: "Siklon Açma" },
+    { date: "2026-09-10", factory: "mersin", training: "Siklon Açma" },
+    { date: "2026-09-22", factory: "afyon", training: "Su Jeti Kullanımı" },
+    { date: "2026-09-23", factory: "eskisehir", training: "Su Jeti Kullanımı" },
+    { date: "2026-09-24", factory: "mersin", training: "Su Jeti Kullanımı" },
+    { date: "2026-09-29", factory: "afyon", training: "Değirmen Operatörlüğü" },
+    { date: "2026-09-30", factory: "eskisehir", training: "Değirmen Operatörlüğü" },
+    { date: "2026-10-01", factory: "mersin", training: "Değirmen Operatörlüğü" },
+    { date: "2026-10-07", factory: "eskisehir", training: "İntikal Çanak" },
+    { date: "2026-10-08", factory: "mersin", training: "İntikal Çanak" },
+    { date: "2026-10-13", factory: "afyon", training: "İntikal Çanak" },
+    { date: "2026-10-20", factory: "afyon", training: "Kovalı Taşıyıcılar" },
+    { date: "2026-10-21", factory: "eskisehir", training: "Kovalı Taşıyıcılar" },
+    { date: "2026-10-22", factory: "mersin", training: "Kovalı Taşıyıcılar" },
+    { date: "2026-11-03", factory: "afyon", training: "Döner Fırınlar" },
+    { date: "2026-11-11", factory: "eskisehir", training: "Döner Fırınlar" },
+    { date: "2026-11-12", factory: "mersin", training: "Döner Fırınlar" },
+    { date: "2026-11-17", factory: "afyon", training: "Siklon Ön Isıtıcı" },
+    { date: "2026-11-18", factory: "eskisehir", training: "Siklon Ön Isıtıcı" },
+    { date: "2026-11-19", factory: "mersin", training: "Siklon Ön Isıtıcı" },
+    { date: "2026-11-24", factory: "afyon", training: "Yükleme Bantı" },
+    { date: "2026-11-25", factory: "eskisehir", training: "Yükleme Bantı" },
+    { date: "2026-11-26", factory: "mersin", training: "Yükleme Bantı" },
+    { date: "2026-12-08", factory: "afyon", training: "Kesek Kırıcılar" },
+    { date: "2026-12-09", factory: "eskisehir", training: "Kesek Kırıcılar" },
+    { date: "2026-12-10", factory: "mersin", training: "Kesek Kırıcılar" },
+    { date: "2026-12-15", factory: "afyon", training: "Paletli Bantlar" },
+    { date: "2026-12-23", factory: "eskisehir", training: "Paletli Bantlar" },
+    { date: "2026-12-24", factory: "mersin", training: "Paletli Bantlar" },
+    { date: "2026-12-29", factory: "afyon", training: "Soğutma Kulesi" },
+    { date: "2026-12-30", factory: "eskisehir", training: "Soğutma Kulesi" },
+    { date: "2026-12-31", factory: "mersin", training: "Soğutma Kulesi" },
+    { date: "2027-01-05", factory: "afyon", training: "Fan Bakımı ve Değişimi" },
+    { date: "2027-01-06", factory: "eskisehir", training: "Fan Bakımı ve Değişimi" },
+    { date: "2027-01-07", factory: "mersin", training: "Fan Bakımı ve Değişimi" },
+    { date: "2027-01-19", factory: "afyon", training: "Gezer Vinç Bakımı" },
+    { date: "2027-01-20", factory: "eskisehir", training: "Gezer Vinç Bakımı" },
+    { date: "2027-01-21", factory: "mersin", training: "Gezer Vinç Bakımı" },
+    { date: "2027-02-02", factory: "afyon", training: "Hücre Tekeri" },
+    { date: "2027-02-03", factory: "eskisehir", training: "Hücre Tekeri" },
+    { date: "2027-02-04", factory: "mersin", training: "Hücre Tekeri" },
+    { date: "2027-02-09", factory: "afyon", training: "Patlaçlar" },
+    { date: "2027-02-10", factory: "eskisehir", training: "Patlaçlar" },
+    { date: "2027-02-11", factory: "mersin", training: "Patlaçlar" },
+    { date: "2027-02-17", factory: "eskisehir", training: "Bunker Kontrolü ve Temizliği" },
+    { date: "2027-02-18", factory: "mersin", training: "Bunker Kontrolü ve Temizliği" },
+    { date: "2027-02-23", factory: "afyon", training: "Bunker Kontrolü ve Temizliği" },
+    { date: "2027-03-02", factory: "afyon", training: "Dolum Cihazı Bakımı" },
+    { date: "2027-03-03", factory: "eskisehir", training: "Dolum Cihazı Bakımı" },
+    { date: "2027-03-04", factory: "mersin", training: "Dolum Cihazı Bakımı" },
+    { date: "2027-03-23", factory: "afyon", training: "Sarsak Elek Kontrolü" },
+    { date: "2027-03-24", factory: "eskisehir", training: "Sarsak Elek Kontrolü" },
+    { date: "2027-03-25", factory: "mersin", training: "Sarsak Elek Kontrolü" },
+    { date: "2027-03-30", factory: "afyon", training: "Çelik Bantlar" },
+    { date: "2027-03-31", factory: "eskisehir", training: "Çelik Bantlar" },
+    { date: "2027-04-01", factory: "mersin", training: "Çelik Bantlar" },
+    { date: "2027-04-07", factory: "eskisehir", training: "Dozajlı Besleyiciler" },
+    { date: "2027-04-08", factory: "mersin", training: "Dozajlı Besleyiciler" },
+    { date: "2027-04-13", factory: "afyon", training: "Dozajlı Besleyiciler" },
+    { date: "2027-04-21", factory: "eskisehir", training: "Klapeler ve Kelebek Vanalar" },
+    { date: "2027-04-22", factory: "mersin", training: "Klapeler ve Kelebek Vanalar" },
+    { date: "2027-04-27", factory: "afyon", training: "Klapeler ve Kelebek Vanalar" },
+    { date: "2027-05-04", factory: "afyon", training: "Buhar Kazanı" },
+    { date: "2027-05-05", factory: "eskisehir", training: "Buhar Kazanı" },
+    { date: "2027-05-06", factory: "mersin", training: "Buhar Kazanı" },
+    { date: "2027-05-12", factory: "eskisehir", training: "Eked" },
+    { date: "2027-05-13", factory: "mersin", training: "Eked" },
+    { date: "2027-05-20", factory: "mersin", training: "Torbalı Filtreler" },
+    { date: "2027-05-25", factory: "afyon", training: "Eked" },
+    { date: "2027-05-26", factory: "eskisehir", training: "Torbalı Filtreler" },
+    { date: "2027-06-01", factory: "afyon", training: "Torbalı Filtreler" },
+    { date: "2027-06-03", factory: "mersin", training: "Blowerlar" },
+    { date: "2027-06-09", factory: "eskisehir", training: "Blowerlar" },
+    { date: "2027-06-15", factory: "afyon", training: "Blowerlar" },
+    { date: "2027-06-17", factory: "mersin", training: "Havalı Bantlar" },
+    { date: "2027-06-22", factory: "afyon", training: "Havalı Bantlar" },
+    { date: "2027-06-23", factory: "eskisehir", training: "Havalı Bantlar" },
+    { date: "2027-06-24", factory: "mersin", training: "Kontrasörler" },
+    { date: "2027-06-30", factory: "eskisehir", training: "Kontrasörler" },
+    { date: "2027-07-01", factory: "mersin", training: "Sızdırmazlık Elemanları" },
+    { date: "2027-07-06", factory: "afyon", training: "Kontrasörler" },
+    { date: "2027-07-07", factory: "eskisehir", training: "Sızdırmazlık Elemanları" },
+    { date: "2027-07-13", factory: "afyon", training: "Sızdırmazlık Elemanları" },
+    { date: "2027-07-21", factory: "eskisehir", training: "Yağlama Sistemleri" },
+    { date: "2027-07-22", factory: "mersin", training: "Yağlama Sistemleri" },
+    { date: "2027-07-27", factory: "afyon", training: "Yağlama Sistemleri" }
+  ];
+
+  var CAL_HOLIDAYS = [
+    { date: "2026-07-15", label: "15 Temmuz" },
+    { date: "2026-08-30", label: "30 Ağustos" },
+    { date: "2026-10-28", label: "Cumhuriyet Bayramı Arifesi" },
+    { date: "2026-10-29", label: "Cumhuriyet Bayramı" },
+    { date: "2027-01-01", label: "Yılbaşı" },
+    { date: "2027-03-08", label: "Ramazan Bayramı Arifesi" },
+    { date: "2027-03-09", label: "Ramazan Bayramı" },
+    { date: "2027-03-10", label: "Ramazan Bayramı" },
+    { date: "2027-03-11", label: "Ramazan Bayramı" },
+    { date: "2027-04-23", label: "23 Nisan" },
+    { date: "2027-05-01", label: "1 Mayıs" },
+    { date: "2027-05-15", label: "Kurban Bayramı Arifesi" },
+    { date: "2027-05-16", label: "Kurban Bayramı" },
+    { date: "2027-05-17", label: "Kurban Bayramı" },
+    { date: "2027-05-18", label: "Kurban Bayramı" },
+    { date: "2027-05-19", label: "Kurban Bayramı / 19 Mayıs" },
+    { date: "2027-07-15", label: "15 Temmuz" }
+  ];
+
   var state = {
     data: { talimatnameler: [], egitimler: [], cimsaustam: [] },
     currentCategory: null
@@ -23,6 +156,7 @@
     cacheElements();
     document.getElementById("year").textContent = new Date().getFullYear();
     loadData();
+    safeRun(renderCalendar, "renderCalendar");
     safeRun(bindEvents, "bindEvents");
     safeRun(setupInstallPrompt, "setupInstallPrompt");
     safeRun(registerServiceWorker, "registerServiceWorker");
@@ -73,6 +207,56 @@
     els.shareEmail = document.getElementById("share-email");
     els.shareCopy = document.getElementById("share-copy");
     els.shareCopyLabel = document.getElementById("share-copy-label");
+  }
+
+  // ---------------- Eğitim Takvimi render ----------------
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function buildCalendarMonthHTML(year, monthIndex) {
+    var firstDay = new Date(year, monthIndex, 1);
+    var daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    var offset = (firstDay.getDay() + 6) % 7; // 0 = Monday
+
+    var html = '<div class="cal-month">';
+    html += '<h3 class="cal-month-title">' + CAL_MONTH_NAMES[monthIndex].toUpperCase() + " " + year + "</h3>";
+    html += '<div class="cal-grid">';
+    CAL_DAY_NAMES.forEach(function (d) { html += '<div class="cal-dayname">' + d + "</div>"; });
+    for (var i = 0; i < offset; i++) html += '<div class="cal-cell cal-cell--empty"></div>';
+
+    for (var day = 1; day <= daysInMonth; day++) {
+      var dateStr = year + "-" + pad2(monthIndex + 1) + "-" + pad2(day);
+      var holiday = null, event = null, j;
+      for (j = 0; j < CAL_HOLIDAYS.length; j++) {
+        if (CAL_HOLIDAYS[j].date === dateStr) { holiday = CAL_HOLIDAYS[j]; break; }
+      }
+      if (!holiday) {
+        for (j = 0; j < CAL_EVENTS.length; j++) {
+          if (CAL_EVENTS[j].date === dateStr) { event = CAL_EVENTS[j]; break; }
+        }
+      }
+
+      var cls = "cal-cell";
+      var inner = '<span class="cal-daynum">' + day + "</span>";
+      if (holiday) {
+        cls += " cal-cell--holiday";
+        inner += '<span class="cal-badge">RESMÎ TATİL<br>' + holiday.label + "</span>";
+      } else if (event) {
+        cls += " cal-cell--" + event.factory;
+        inner += '<span class="cal-badge">' + CAL_FACTORY_LABELS[event.factory] + "</span>";
+        inner += '<span class="cal-training">' + event.training + "</span>";
+      }
+      html += '<div class="' + cls + '">' + inner + "</div>";
+    }
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderCalendar() {
+    var container = document.getElementById("calendar-content");
+    if (!container) return;
+    var html = "";
+    CAL_MONTHS.forEach(function (m) { html += buildCalendarMonthHTML(m[0], m[1]); });
+    container.innerHTML = html;
   }
 
   // ---------------- Data loading ----------------
